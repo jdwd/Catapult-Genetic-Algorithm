@@ -1,13 +1,16 @@
-typedef struct{
-    float hb;              //la hauteur de la butée
-    float lb;              //la longueur du bras Lb (en mètres)
-    float mb;              //la masse du bras mb (en kilos)
-    float beta;            //l'angle de la force de traction avec le bras β (en degrés)
-    float mc;              //la masse du contrepoids responsable de la force de traction mc (en kilos)
-    float mp;              //la masse du projectile mp (en kilos)
-    float lr;              //la longueur de la base Lr (en mètres)
-    float alpha;           //l'angle α (en degrés)
-}, CATAPULT;
+#define CATAPULT_ELEM_NBR 8
+
+#define hb 0            //la hauteur de la butée
+#define lb 1;           //la longueur du bras Lb (en mètres)
+#define mb 2;           //la masse du bras mb (en kilos)
+#define beta 3;         //l'angle de la force de traction avec le bras β (en degrés)
+#define mc 4;           //la masse du contrepoids responsable de la force de traction mc (en kilos)
+#define mp 5;           //la masse du projectile mp (en kilos)
+#define lr 6;           //la longueur de la base Lr (en mètres)
+#define alpha 7;        //l'angle α (en degrés)
+
+#define score 8;
+//TODO Tableau de float
 
 /* Fonctions relatice à la catapulte */
 
