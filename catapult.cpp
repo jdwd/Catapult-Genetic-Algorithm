@@ -1,16 +1,21 @@
-#define CATAPULT_ELEM_NBR 8;
-#define CATAPULT_LENGTH 9;
+/* 
+ * File:   catapult.cpp
+ * Author: jdwd
+ *
+ */
 
-#define HB 0;           //la hauteur de la butée
-#define LB 1;           //la longueur du bras Lb (en mètres)
-#define MB 2;           //la masse du bras mb (en kilos)
-#define BETA 3;         //l'angle de la force de traction avec le bras β (en degrés)
-#define MC 4;           //la masse du contrepoids responsable de la force de traction mc (en kilos)
-#define MP 5;           //la masse du projectile mp (en kilos)
-#define LR 6;           //la longueur de la base Lr (en mètres)
-#define ALPHA 7;        //l'angle α (en degrés)
+#define CATAPULT_ELEM_NBR 7;
+#define CATAPULT_LENGTH 8;
 
-#define SCORE 8;
+#define LB 0;           //la longueur du bras Lb (en mètres)
+#define MB 1;           //la masse du bras mb (en kilos)
+#define BETA 2;         //l'angle de la force de traction avec le bras β (en degrés)
+#define MC 3;           //la masse du contrepoids responsable de la force de traction mc (en kilos)
+#define MP 4;           //la masse du projectile mp (en kilos)
+#define LR 5;           //la longueur de la base Lr (en mètres)
+#define ALPHA 6;        //l'angle α (en degrés)
+
+#define SCORE 7;
 
 #define TNT_DENOMINATEUR 4184;
 //TODO Tableau de float
