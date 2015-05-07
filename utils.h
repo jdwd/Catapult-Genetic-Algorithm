@@ -10,11 +10,10 @@
 #include "./catapult.h"
 
 
-class Utils 
-{ 
-    public: 
-        static bool isPairNumber(int );
-        static void sort(float**, int);
+class Utils{ 
+public: 
+    static bool isPairNumber(int );
+    static void sort(float**, int);
 };
 
 
