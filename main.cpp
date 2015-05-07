@@ -1,6 +1,7 @@
 #include <iostream>
 #include "catapult.h"
 #include "utils.h"
+#include "interfaceAsk.h"
 
 /*
  * Définition des constantes de pesanteur
@@ -29,7 +30,21 @@ int main(int argc, char** argv) {
     
     srand(time(NULL));
         
-    int nbrGeneration = 10;
+    
+    //Récupération du nombre d'individus à mettre en génération
+    int nbrGeneration;
+    do {
+        cout << "Enter a number (n > 0) : ";
+        if (!(cin >> nbrGeneration)) {
+            cout << "Please enter numbers only." << endl;
+            cin.clear();
+            cin.ignore(10000,'\n');
+        }    
+    }
+    while (nbrGeneration == 0);
+    cout << "All done." << nbrGeneration << endl;
+   
+    
     
     float** generation;
     
