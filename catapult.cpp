@@ -20,7 +20,7 @@ float Catapult::randomBetween(int min, int max){
     return rand() % max + min;
 }
 
-float* Catapult::genererCatapulte(float* catapulte){
+void Catapult::genererCatapulte(float* &catapulte){
     
     catapulte[LB] = randomBetween(1, 1000);
     catapulte[MB] = randomBetween(1, 2000);
@@ -29,20 +29,17 @@ float* Catapult::genererCatapulte(float* catapulte){
     catapulte[MP] = randomBetween(0, 10000);
     catapulte[LR] = randomBetween(1, 1000);
     catapulte[ALPHA] = randomBetween(0, 180); 
-    
-    return catapulte;
 }
 
-float** Catapult::genererGeneration(float** generation, int generationNbr){
+float** Catapult::genererGeneration(int nbrGeneration){
     
-    generation = new float *[generationNbr];
+    float** generation = new float *[nbrGeneration];
     
-    for(int i = 0; i < generationNbr; i++){
+    for(int i = 0; i < nbrGeneration; i++){
+                
+        float* catapulte = new float[CATAPULT_ARRAY_SIZE];
         
-        float catapulte[CATAPULT_ARRAY_SIZE];
-        float* pCatapulte = catapulte;
-        
-        pCatapulte = Catapult::genererCatapulte(pCatapulte);
+        Catapult::genererCatapulte(catapulte);
         catapulte[SCORE] = Catapult::randomBetween(0, 1000);
         
         generation[i] = catapulte;

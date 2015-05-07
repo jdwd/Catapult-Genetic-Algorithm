@@ -31,21 +31,18 @@ int main(int argc, char** argv) {
         
     int nbrGeneration = 10;
     
-    float** generation;
+    float** generation = Catapult::genererGeneration(nbrGeneration);
     
-    
-    generation = Catapult::genererGeneration(generation, nbrGeneration);
-    
-    //Utils::sort(generation, nbrGeneration);
     for(int i = 0; i < nbrGeneration; i++)
-        for(int j = 0; j < CATAPULT_ARRAY_SIZE; j++)
-            std::cout << j << " > " << generation[i][j] << std::endl;
-   
-    /*   
+            for(int j = 0; j < CATAPULT_ARRAY_SIZE; j++)
+                std::cout << i << ":" << j << " > " << generation[i][SCORE] << std::endl;
+
+    
+    Utils::sort(generation, nbrGeneration);
+     
     for(int j = 0; j < nbrGeneration; j++)
-        //for(int i = 0; i < 8; i++)
-            cout << generation[j][SCORE] << endl;
-    */
+        cout << generation[j][SCORE] << endl;
+    
     return 0;
 }
 
