@@ -35,6 +35,13 @@ public:
     float energieImpact(float*, float);
     float isViable(float*, float);
     float energieTNT(float);
+    static float* croiserCatapultes(float*, float*);
+    static void mutation(float*);
+    static int getPointCoupe();
+    
+private:
+    static int pointCoupe;
 };
+
 #endif
 

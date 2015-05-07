@@ -31,18 +31,33 @@ int main(int argc, char** argv) {
         
     int nbrGeneration = 10;
     
+    float** ancienneGeneration;
     float** generation = Catapult::genererGeneration(nbrGeneration);
-    
+      
+    Utils::sort(generation, nbrGeneration);
+    /*
     for(int i = 0; i < nbrGeneration; i++)
             for(int j = 0; j < CATAPULT_ARRAY_SIZE; j++)
-                std::cout << i << ":" << j << " > " << generation[i][SCORE] << std::endl;
-
+                std::cout << i << ":" << j << " > " << generation[i][j] << std::endl;
+    */
+    //for(int j = 0; j < nbrGeneration; j++)
+    //    cout << generation[j][SCORE] << endl;
     
-    Utils::sort(generation, nbrGeneration);
-     
-    for(int j = 0; j < nbrGeneration; j++)
-        cout << generation[j][SCORE] << endl;
+    ancienneGeneration = generation;
+    generation = new float *[nbrGeneration];
     
+    for(int cpt = 0; cpt < nbrGeneration; cpt+=2){
+        generation[cpt] = Catapult::croiserCatapultes( ancienneGeneration[cpt], ancienneGeneration[cpt+1] );
+        Catapult::mutation(generation[cpt]);
+        generation[cpt+1] = Catapult::croiserCatapultes( ancienneGeneration[cpt], ancienneGeneration[cpt+1] );
+        Catapult::mutation(generation[cpt+1]);
+    }
+    
+    /*cout << "ENFANTS" << endl;
+    for(int i = 0; i < nbrGeneration; i++)
+            for(int j = 0; j < CATAPULT_ARRAY_SIZE; j++)
+                std::cout << i << ":" << j << " > " << generation[i][j] << std::endl;
+    */
     return 0;
 }
 
