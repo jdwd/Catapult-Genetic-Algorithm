@@ -5,9 +5,10 @@
 /*
  * Définition des constantes de pesanteur
  */
-#define G_TERRE 9.81;       //m.s^-2
-#define G_LUNE 1.62;        //m.s^-2
-#define G_JUPITER 24.90;    //m.s^-2
+#define G_TERRE 9.81        //m.s^-2
+#define G_LUNE 1.62         //m.s^-2
+#define G_JUPITER 24.90     //m.s^-2
+#define DISTANCE 300        //m
 
 /*
  * Génération d'une population de X individu
@@ -46,7 +47,7 @@ int main(int argc, char** argv) {
     
     
     float** ancienneGeneration;
-    float** generation = Catapult::genererGeneration(nbrGeneration);
+    float** generation = Catapult::genererGeneration(nbrGeneration, G_TERRE);
       
     Utils::sort(generation, nbrGeneration);
     /*
@@ -54,8 +55,8 @@ int main(int argc, char** argv) {
             for(int j = 0; j < CATAPULT_ARRAY_SIZE; j++)
                 std::cout << i << ":" << j << " > " << generation[i][j] << std::endl;
     */
-    //for(int j = 0; j < nbrGeneration; j++)
-    //    cout << generation[j][SCORE] << endl;
+    for(int j = 0; j < nbrGeneration; j++)
+        cout << generation[j][SCORE] << endl;
     
     ancienneGeneration = generation;
     generation = new float *[nbrGeneration];

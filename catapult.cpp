@@ -1,23 +1,6 @@
 #include "catapult.h"
 
-//TODO Tableau de float
-
-/* Fonctions relatives à la catapulte */
-/** A FAIRE
- * FORCE DE TRACTION
- * MOMENT DU BRAS
- * MOMENT D'INERTIE DU BRAS
- * ACCELERATION ANGULAIRE UNIFORME
- * VELICITE
- * PORTEE
- * ENERGIE D'INPACTE
- * Formule determinant si la constructione est VIABLE
- * EQUIVALENCE Joule et TNT
- */
-
 int Catapult::pointCoupe = 0;
-
-
 float Catapult::randomBetween(int min, int max){
     
     return rand() % max + min;
@@ -45,7 +28,7 @@ int genererGene(int gene){
     }
 }
 
-void Catapult::genererCatapulte(float* &catapulte){
+void Catapult::genererCatapulte(float* &catapulte, float gravite){
     
     catapulte[LB] = genererGene(LB);
     catapulte[MB] = genererGene(MB);
@@ -54,9 +37,10 @@ void Catapult::genererCatapulte(float* &catapulte){
     catapulte[MP] = genererGene(MP);
     catapulte[LR] = genererGene(LR);
     catapulte[ALPHA] = genererGene(ALPHA);
+    catapulte[SCORE] = Catapult::calculScore(catapulte, gravite);
 }
 
-float** Catapult::genererGeneration(int nbrGeneration){
+float** Catapult::genererGeneration(int nbrGeneration, float gravite){
     
     float** generation = new float *[nbrGeneration];
     
@@ -64,8 +48,7 @@ float** Catapult::genererGeneration(int nbrGeneration){
                 
         float* catapulte = new float[CATAPULT_ARRAY_SIZE];
         
-        Catapult::genererCatapulte(catapulte);
-        catapulte[SCORE] = Catapult::randomBetween(0, 1000);
+        Catapult::genererCatapulte(catapulte, gravite);
         
         generation[i] = catapulte;
     }
@@ -111,47 +94,81 @@ void Catapult::mutation(float* catapulte){
 }
 
 //Force de traction F (en N))
-float forceTraction(float* catapult, float gravite){
+float Catapult::forceTraction(float* catapult, float gravite){
     return((catapult[MC]*gravite)*sin(catapult[BETA])-(catapult[MP]*gravite)*cos(catapult[ALPHA]));
 }
 
 //Moment du bras M en (en N.m)
-float momentBras(float* catapult, float gravite){
+float Catapult::momentBras(float* catapult, float gravite){
     return (forceTraction(catapult, gravite)*catapult[LB]);
 }
 
 //Moment d'inertie du bras I (en kg/m²)
-float momentInertieBras(float* catapult){
+float Catapult::momentInertieBras(float* catapult){
     return ((catapult[MB]*sqrt(catapult[LB]))/3);
 }
 
 //Accélération angulaire uniforme a (en rad/s²)
-float accelerationAngulaire(float* catapult, float gravite){
+float Catapult::accelerationAngulaire(float* catapult, float gravite){
     return (momentBras(catapult, gravite)/momentInertieBras(catapult));
 }
 
 //Vélocité V (en m/s)
-float velocite(float* catapult, float gravite){
+float Catapult::velocite(float* catapult, float gravite){
     return (accelerationAngulaire(catapult, gravite)*catapult[LB]);
 }
 
 //Portée P (en M)
-float portee(float* catapult, float gravite){
-    return ((sqrt(velocite(catapult, gravite))/gravite)*sin(2*(90-catapult[ALPHA])));
+float Catapult::portee(float* catapult, float gravite){
+    return ((pow(velocite(catapult, gravite), 2)/gravite)*sin(2*(90-catapult[ALPHA])));
 }
 
 //Energie d'impact (en joules) assimilée à la force cinétique transformée à l'impact
-float energieImpact(float* catapult, float gravite){
-    return (0.5*catapult[MP]*sqrt(velocite(catapult, gravite)));
+float Catapult::energieImpact(float* catapult, float gravite){
+    
+    return (0.5*catapult[MP]*pow(velocite(catapult, gravite), 2));
 }
 
 //Indique si la construction est viable
-float isViable(float* catapult, float gravite){
-    float lessPart = ((sqrt(sin(catapult[ALPHA])*catapult[LB])+sqrt((cos(catapult[ALPHA])*catapult[LB])-catapult[LR]))*sin(catapult[ALPHA])*(catapult[MP]*gravite));
+bool Catapult::isViable(float* catapult, float gravite){
+    float lessPart = (pow(
+                            (sin(catapult[ALPHA])
+                            *catapult[LB])
+                            , 2)
+                    +pow(
+                            (
+                                (cos(catapult[ALPHA])
+                                *catapult[LB])
+                                -catapult[LR]
+                            )
+                            , 2)
+                        *sin(catapult[ALPHA])
+                        *(catapult[MP]*gravite));
     float morePart  = catapult[LR]*(catapult[MC]*gravite);
     return (lessPart <= morePart);
 }
 
-float energieTNT(float energieJoule){
+//Conversion d'une energie en joue en TNT
+float Catapult::energieTNT(float energieJoule){
     return (energieJoule/TNT_DENOMINATEUR);
+}
+
+//Définit le score d'une catapulte
+float Catapult::calculScore(float* catapult, float gravite){
+    //Une catapulte se doit d'envoyer un boulet à une cible à une distance D avec l'énergie cinétique C la plus élevée
+    float score=0;
+    float v=1;
+    float e = energieImpact(catapult, gravite);
+    float p = portee(catapult, gravite);
+
+    //Dans un premier temps il nous faut déterminer si la construction est viable
+    if(!isViable(catapult, gravite)){
+        v=PONDERATION_VIABLE;
+    }
+    
+    e = (e*PONDERATION_ENERGIE);
+    p = (p*PONDERATION_PORTEE);
+    
+    return (e+p)/v;
+     
 }

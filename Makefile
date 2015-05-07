@@ -26,7 +26,6 @@ all: $(TARGETDIR_catapult.exe)/catapult.exe
 ## Target: catapult.exe
 OBJS_catapult.exe =  \
 	$(TARGETDIR_catapult.exe)/catapult.o \
-	$(TARGETDIR_catapult.exe)/interfaceAsk.o \
 	$(TARGETDIR_catapult.exe)/main.o \
 	$(TARGETDIR_catapult.exe)/utils.o
 SYSLIBS_catapult.exe = -lm 
@@ -44,9 +43,6 @@ $(TARGETDIR_catapult.exe)/catapult.exe: $(TARGETDIR_catapult.exe) $(OBJS_catapul
 $(TARGETDIR_catapult.exe)/catapult.o: $(TARGETDIR_catapult.exe) catapult.cpp
 	$(COMPILE.cc) $(CCFLAGS_catapult.exe) $(CPPFLAGS_catapult.exe) -o $@ catapult.cpp
 
-$(TARGETDIR_catapult.exe)/interfaceAsk.o: $(TARGETDIR_catapult.exe) interfaceAsk.cpp
-	$(COMPILE.cc) $(CCFLAGS_catapult.exe) $(CPPFLAGS_catapult.exe) -o $@ interfaceAsk.cpp
-
 $(TARGETDIR_catapult.exe)/main.o: $(TARGETDIR_catapult.exe) main.cpp
 	$(COMPILE.cc) $(CCFLAGS_catapult.exe) $(CPPFLAGS_catapult.exe) -o $@ main.cpp
 
@@ -60,7 +56,6 @@ clean:
 	rm -f \
 		$(TARGETDIR_catapult.exe)/catapult.exe \
 		$(TARGETDIR_catapult.exe)/catapult.o \
-		$(TARGETDIR_catapult.exe)/interfaceAsk.o \
 		$(TARGETDIR_catapult.exe)/main.o \
 		$(TARGETDIR_catapult.exe)/utils.o
 	$(CCADMIN)
