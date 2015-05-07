@@ -10,7 +10,7 @@
 #include "./catapult.h"
 
 
-class utils 
+class Utils 
 { 
     public: 
         bool isPairNumber(int );
