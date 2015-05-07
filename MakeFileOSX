@@ -55,7 +55,7 @@ clean:
 	rm -f \
 		$(TARGETDIR_Catapult)/Catapult \
 		$(TARGETDIR_Catapult)/catapult.o \
-		$(TARGETDIR_Catapult)/main.o
+		$(TARGETDIR_Catapult)/main.o \
 		$(TARGETDIR_Catapult)/utils.o
 	$(CCADMIN)
 	rm -f -r $(TARGETDIR_Catapult)
