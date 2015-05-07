@@ -1,0 +1,68 @@
+## -*- Makefile -*-
+##
+## User: maxoumime
+## Time: 4 mai 2015 11:07:48
+## Makefile created by Oracle Solaris Studio.
+##
+## This file is generated automatically.
+##
+
+
+#### Compiler and tool definitions shared by all build targets #####
+CCC = g++
+CXX = g++
+BASICOPTS = -g -m64
+CCFLAGS = $(BASICOPTS)
+CXXFLAGS = $(BASICOPTS)
+CCADMIN = 
+
+
+# Define the target directories.
+TARGETDIR_Catapult=GNU-x86_64-MacOSX
+
+
+all: $(TARGETDIR_Catapult)/Catapult
+
+## Target: Catapult
+OBJS_Catapult =  \
+	$(TARGETDIR_Catapult)/catapult.o \
+	$(TARGETDIR_Catapult)/main.o
+SYSLIBS_Catapult = -lm -lpthread 
+USERLIBS_Catapult = $(SYSLIBS_Catapult) 
+DEPLIBS_Catapult =  
+LDLIBS_Catapult = $(USERLIBS_Catapult)
+
+
+# Link or archive
+$(TARGETDIR_Catapult)/Catapult: $(TARGETDIR_Catapult) $(OBJS_Catapult) $(DEPLIBS_Catapult)
+	$(LINK.cc) $(CCFLAGS_Catapult) $(CPPFLAGS_Catapult) -o $@ $(OBJS_Catapult) $(LDLIBS_Catapult)
+
+
+# Compile source files into .o files
+$(TARGETDIR_Catapult)/catapult.o: $(TARGETDIR_Catapult) catapult.cpp
+	$(COMPILE.cc) $(CCFLAGS_Catapult) $(CPPFLAGS_Catapult) -o $@ catapult.cpp
+
+$(TARGETDIR_Catapult)/main.o: $(TARGETDIR_Catapult) main.cpp
+	$(COMPILE.cc) $(CCFLAGS_Catapult) $(CPPFLAGS_Catapult) -o $@ main.cpp
+
+
+
+#### Clean target deletes all generated files ####
+clean:
+	rm -f \
+		$(TARGETDIR_Catapult)/Catapult \
+		$(TARGETDIR_Catapult)/catapult.o \
+		$(TARGETDIR_Catapult)/main.o
+	$(CCADMIN)
+	rm -f -r $(TARGETDIR_Catapult)
+
+
+# Create the target directory (if needed)
+$(TARGETDIR_Catapult):
+	mkdir -p $(TARGETDIR_Catapult)
+
+
+# Enable dependency checking
+.KEEP_STATE:
+.KEEP_STATE_FILE:.make.state.GNU-x86_64-MacOSX
+

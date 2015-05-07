@@ -1,20 +1,11 @@
-/* 
- * File:   main.cpp
- * Author: maxoumime
- *
- * Created on 24 avril 2015, 11:16
- */
-
-#include <cstdlib>
 #include <iostream>
+#include "catapult.h"
 /*
  * Définition des constantes de pesanteur
  */
 #define G_TERRE 9.81;       //m.s^-2
 #define G_LUNE 1.62;        //m.s^-2
 #define G_JUPITER 24.90;    //m.s^-2
-
-
 
 /*
  * Génération d'une population de X individu
@@ -33,8 +24,20 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-
-    cout << "HEY HEY HEY" << endl;
+    
+    srand(time(NULL));
+        
+    int nbrGeneration = 10;
+    
+    float** generation;
+    
+    
+    generation = Catapult::genererGeneration(generation, nbrGeneration);
+     /*  
+    for(int j = 0; j < nbrGeneration; j++)
+        for(int i = 0; i < 8; i++)
+            cout << generation[j][i] << endl;
+    */
     return 0;
 }
 

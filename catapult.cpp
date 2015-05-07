@@ -1,15 +1,5 @@
-#define CATAPULT_ELEM_NBR 8
+#include "catapult.h"
 
-#define hb 0            //la hauteur de la butée
-#define lb 1;           //la longueur du bras Lb (en mètres)
-#define mb 2;           //la masse du bras mb (en kilos)
-#define beta 3;         //l'angle de la force de traction avec le bras β (en degrés)
-#define mc 4;           //la masse du contrepoids responsable de la force de traction mc (en kilos)
-#define mp 5;           //la masse du projectile mp (en kilos)
-#define lr 6;           //la longueur de la base Lr (en mètres)
-#define alpha 7;        //l'angle α (en degrés)
-
-#define score 8;
 //TODO Tableau de float
 
 /* Fonctions relatice à la catapulte */
@@ -26,3 +16,41 @@
  * Formule determinant si la constructione est VIABLE
  * EQUIVALENCE Joule et TNT
  */
+
+float Catapult::randomBetween(int min, int max){
+    
+    return rand() % max + min;
+}
+
+float* Catapult::genererCatapulte(float* catapulte){
+    
+    catapulte[LB] = randomBetween(1, 1000);
+    catapulte[MB] = randomBetween(1, 2000);
+    catapulte[BETA] = randomBetween(0, 180);
+    catapulte[MC] = randomBetween(0, 10000);
+    catapulte[MP] = randomBetween(0, 10000);
+    catapulte[LR] = randomBetween(1, 1000);
+    catapulte[ALPHA] = randomBetween(0, 180); 
+    
+    return catapulte;
+}
+
+float** Catapult::genererGeneration(float** generation, int generationNbr){
+    
+    generation = new float *[generationNbr];
+    
+    for(int i = 0; i < generationNbr; i++){
+        
+        float catapulte[CATAPULT_ARRAY_SIZE];
+        float* pCatapulte = catapulte;
+        
+        pCatapulte = Catapult::genererCatapulte(pCatapulte);
+        
+        for(int j = 0; j < CATAPULT_ARRAY_SIZE; j++)
+            std::cout << catapulte[j] << std::endl;
+        
+        generation[i] = catapulte;
+    }
+    
+    return generation;
+}
