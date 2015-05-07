@@ -1,5 +1,7 @@
 #include <iostream>
 #include "catapult.h"
+#include "utils.h"
+
 /*
  * Définition des constantes de pesanteur
  */
@@ -33,10 +35,16 @@ int main(int argc, char** argv) {
     
     
     generation = Catapult::genererGeneration(generation, nbrGeneration);
-     /*  
+    
+    //Utils::sort(generation, nbrGeneration);
+    for(int i = 0; i < nbrGeneration; i++)
+        for(int j = 0; j < CATAPULT_ARRAY_SIZE; j++)
+            std::cout << j << " > " << generation[i][j] << std::endl;
+   
+    /*   
     for(int j = 0; j < nbrGeneration; j++)
-        for(int i = 0; i < 8; i++)
-            cout << generation[j][i] << endl;
+        //for(int i = 0; i < 8; i++)
+            cout << generation[j][SCORE] << endl;
     */
     return 0;
 }

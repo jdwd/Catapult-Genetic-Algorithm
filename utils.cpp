@@ -8,12 +8,12 @@
 
 
     //Fonction permettant de vérifier si un nombre est pair
-    bool utils::isPairNumber(int number){
+    bool Utils::isPairNumber(int number){
         return ((number%2)==0);
     }
 
     //Fonction permettant de trier le tableau de catapulte par son score
-    void utils::sort(float** tab, int length){
+    void Utils::sort(float** tab, int length){
         //Principe : tri par permutation des éléments du tableau
         float* temp = 0;
         int j, i;

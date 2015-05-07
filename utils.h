@@ -13,8 +13,8 @@
 class Utils 
 { 
     public: 
-        bool isPairNumber(int );
-        void sort(float**, int);
+        static bool isPairNumber(int );
+        static void sort(float**, int);
 };
 
 

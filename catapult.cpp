@@ -43,9 +43,7 @@ float** Catapult::genererGeneration(float** generation, int generationNbr){
         float* pCatapulte = catapulte;
         
         pCatapulte = Catapult::genererCatapulte(pCatapulte);
-        
-        for(int j = 0; j < CATAPULT_ARRAY_SIZE; j++)
-            std::cout << j << " > " << catapulte[j] << std::endl;
+        catapulte[SCORE] = Catapult::randomBetween(0, 1000);
         
         generation[i] = catapulte;
     }
