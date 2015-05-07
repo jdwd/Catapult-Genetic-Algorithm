@@ -23,9 +23,9 @@
 class Catapult{
     
 public:
-    static float* genererCatapulte(float*);
+    static void genererCatapulte(float*&);
     static float randomBetween(int, int);
-    static float** genererGeneration(float**, int);
+    static float** genererGeneration(int);
     float forceTraction(float*, float);
     float momentBras(float*, float);
     float momentInertieBras(float*);
