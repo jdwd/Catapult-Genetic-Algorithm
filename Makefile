@@ -1,7 +1,7 @@
 ## -*- Makefile -*-
 ##
 ## User: Justine Dewilde
-## Time: 24 avr. 2015 11:36:09
+## Time: 4 mai 2015 12:56:27
 ## Makefile created by Oracle Solaris Studio.
 ##
 ## This file is generated automatically.
@@ -11,7 +11,7 @@
 #### Compiler and tool definitions shared by all build targets #####
 CCC = g++
 CXX = g++
-BASICOPTS = -g -m64
+BASICOPTS = -g
 CCFLAGS = $(BASICOPTS)
 CXXFLAGS = $(BASICOPTS)
 CCADMIN = 
@@ -25,7 +25,9 @@ all: $(TARGETDIR_catapult.exe)/catapult.exe
 
 ## Target: catapult.exe
 OBJS_catapult.exe =  \
-	$(TARGETDIR_catapult.exe)/main.o
+	$(TARGETDIR_catapult.exe)/catapult.o \
+	$(TARGETDIR_catapult.exe)/main.o \
+	$(TARGETDIR_catapult.exe)/utils.o
 SYSLIBS_catapult.exe = -lm -lpthread 
 USERLIBS_catapult.exe = $(SYSLIBS_catapult.exe) 
 DEPLIBS_catapult.exe =  
@@ -38,8 +40,14 @@ $(TARGETDIR_catapult.exe)/catapult.exe: $(TARGETDIR_catapult.exe) $(OBJS_catapul
 
 
 # Compile source files into .o files
+$(TARGETDIR_catapult.exe)/catapult.o: $(TARGETDIR_catapult.exe) catapult.cpp
+	$(COMPILE.cc) $(CCFLAGS_catapult.exe) $(CPPFLAGS_catapult.exe) -o $@ catapult.cpp
+
 $(TARGETDIR_catapult.exe)/main.o: $(TARGETDIR_catapult.exe) main.cpp
 	$(COMPILE.cc) $(CCFLAGS_catapult.exe) $(CPPFLAGS_catapult.exe) -o $@ main.cpp
+
+$(TARGETDIR_catapult.exe)/utils.o: $(TARGETDIR_catapult.exe) utils.cpp
+	$(COMPILE.cc) $(CCFLAGS_catapult.exe) $(CPPFLAGS_catapult.exe) -o $@ utils.cpp
 
 
 
@@ -47,7 +55,9 @@ $(TARGETDIR_catapult.exe)/main.o: $(TARGETDIR_catapult.exe) main.cpp
 clean:
 	rm -f \
 		$(TARGETDIR_catapult.exe)/catapult.exe \
-		$(TARGETDIR_catapult.exe)/main.o
+		$(TARGETDIR_catapult.exe)/catapult.o \
+		$(TARGETDIR_catapult.exe)/main.o \
+		$(TARGETDIR_catapult.exe)/utils.o
 	$(CCADMIN)
 	rm -f -r $(TARGETDIR_catapult.exe)
 

@@ -1,6 +1,7 @@
 #ifndef CATAPULT_H
 #define	CATAPULT_H
 
+#include <math.h>
 #include <stdlib.h> 
 #include <iostream>
 
@@ -15,7 +16,9 @@
 #define LR 5          //la longueur de la base Lr (en mètres)
 #define ALPHA 6        //l'angle α (en degrés)
 
-#define score 7;
+#define SCORE 7
+
+#define TNT_DENOMINATEUR 4184
 
 class Catapult{
     
@@ -23,7 +26,15 @@ public:
     static float* genererCatapulte(float*);
     static float randomBetween(int, int);
     static float** genererGeneration(float**, int);
+    float forceTraction(float*, float);
+    float momentBras(float*, float);
+    float momentInertieBras(float*);
+    float accelerationAngulaire(float*, float);
+    float velocite(float*, float);
+    float portee(float*, float);
+    float energieImpact(float*, float);
+    float isViable(float*, float);
+    float energieTNT(float);
 };
-
 #endif
 
