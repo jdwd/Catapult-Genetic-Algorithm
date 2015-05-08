@@ -69,7 +69,7 @@ int main(int argc, char** argv) {
     while ((nbrGeneration == 0) || (!Utils::isPairNumber(nbrGeneration)));
       
     float moyennesGeneration[GENERATION_NBR_MINIMUM];
-    int generationNbr = 1;
+    int generationNbr = 0;
     
     float** ancienneGeneration;
     float** generation = Catapult::genererGeneration(nbrGeneration);
@@ -84,16 +84,39 @@ int main(int argc, char** argv) {
         //for(int j = 0; j < nbrGeneration; j++)
         //    cout << generation[j][SCORE] << endl;
 
+        if(generationNbr > 0){
+            for(int i = 0; i < nbrGeneration; i++){
+                delete ancienneGeneration[i];
+            }
+            delete ancienneGeneration;
+        }
+        
         ancienneGeneration = generation;
+        
         generation = new float *[nbrGeneration];
 
+        double scoreTotal = 0;
         //TODO CALCUL MOYENNE
         for(int cpt = 0; cpt < nbrGeneration; cpt+=2){
+            
+            scoreTotal += ancienneGeneration[cpt][SCORE] + ancienneGeneration[cpt+1][SCORE];
+            
             generation[cpt] = Catapult::croiserCatapultes( ancienneGeneration[cpt], ancienneGeneration[cpt+1] );
             Catapult::mutation(generation[cpt]);
             generation[cpt+1] = Catapult::croiserCatapultes( ancienneGeneration[cpt], ancienneGeneration[cpt+1] );
             Catapult::mutation(generation[cpt+1]);
         }
+        
+        double scoreGeneration = scoreTotal / nbrGeneration;
+        
+        if(generationNbr <= 3)
+            moyennesGeneration[generationNbr] = scoreGeneration;
+        else moyennesGeneration[ generationNbr-1 % GENERATION_NBR_MINIMUM ] = scoreGeneration;
+        
+        if(generationNbr > 3)
+            cout << moyennesGeneration[0] << ":" << moyennesGeneration[1] << ":" << moyennesGeneration[3] << endl;
+        
+        cout << "Génération n°" << generationNbr << ":" << scoreGeneration << endl;
         
         generationNbr++;
 
