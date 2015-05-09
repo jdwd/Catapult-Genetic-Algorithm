@@ -13,6 +13,9 @@
 #define GENERATION_NBR_MINIMUM 3
 #define ECART_VARIATION 0.05f
 
+#define GENERATION_NBR_MINIMUM 3
+#define ECART_VARIATION 0.05f
+
 /*
  * Génération d'une population de X individu
  * Test de chaque individus
