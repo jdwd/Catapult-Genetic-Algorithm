@@ -98,6 +98,8 @@ float* Catapult::croiserCatapultes(float* maman1, float* maman2){
     for(int chromosome = pointCoupe+1; chromosome <= CATAPULT_ELEM_NBR; chromosome++)
         fiston[chromosome] = maman2[chromosome];
     
+    fiston[SCORE] = Catapult::randomBetween(0, 1000);
+    
     return fiston;
 }
 

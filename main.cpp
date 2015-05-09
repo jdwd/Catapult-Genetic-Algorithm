@@ -28,7 +28,7 @@ using namespace std;
 //TODO A VERIFIER
 bool isEnEvolution(int generationNbr, float moyennesGeneration[GENERATION_NBR_MINIMUM]){
  
-    if(generationNbr < GENERATION_NBR_MINIMUM)
+    if(generationNbr <= GENERATION_NBR_MINIMUM)
         return true;
     
     int meilleurScoreIndex = -1;
@@ -96,7 +96,7 @@ int main(int argc, char** argv) {
         generation = new float *[nbrGeneration];
 
         double scoreTotal = 0;
-        //TODO CALCUL MOYENNE
+
         for(int cpt = 0; cpt < nbrGeneration; cpt+=2){
             
             scoreTotal += ancienneGeneration[cpt][SCORE] + ancienneGeneration[cpt+1][SCORE];
@@ -109,12 +109,13 @@ int main(int argc, char** argv) {
         
         double scoreGeneration = scoreTotal / nbrGeneration;
         
+        
         if(generationNbr <= 3)
             moyennesGeneration[generationNbr] = scoreGeneration;
-        else moyennesGeneration[ generationNbr-1 % GENERATION_NBR_MINIMUM ] = scoreGeneration;
+        else moyennesGeneration[ (generationNbr-1) % GENERATION_NBR_MINIMUM ] = scoreGeneration;
         
-        if(generationNbr > 3)
-            cout << moyennesGeneration[0] << ":" << moyennesGeneration[1] << ":" << moyennesGeneration[3] << endl;
+        //if(generationNbr > 3)
+        //    cout << moyennesGeneration[0] << ":" << moyennesGeneration[1] << ":" << moyennesGeneration[3] << endl;
         
         cout << "Génération n°" << generationNbr << ":" << scoreGeneration << endl;
         
@@ -125,6 +126,7 @@ int main(int argc, char** argv) {
                 for(int j = 0; j < CATAPULT_ARRAY_SIZE; j++)
                     std::cout << i << ":" << j << " > " << generation[i][j] << std::endl;
         */
+        
     }while( isEnEvolution(generationNbr, moyennesGeneration) );
     return 0;
 }
