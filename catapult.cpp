@@ -87,10 +87,8 @@ float* Catapult::croiserCatapultes(float* maman1, float* maman2){
 void Catapult::mutation(float* catapulte){
     
     for(int i = 0; i < CATAPULT_ELEM_NBR; i++)
-        if(randomBetween(1, 100) <= 5){
-            std::cout << "MUTATION" << std::endl;
+        if(randomBetween(1, 100) <= 5)
             catapulte[i] = genererGene(i);
-        }
 }
 
 //Force de traction F (en N))
