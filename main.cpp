@@ -5,9 +5,13 @@
 /*
  * Définition des constantes de pesanteur
  */
-#define G_TERRE 9.81;       //m.s^-2
-#define G_LUNE 1.62;        //m.s^-2
-#define G_JUPITER 24.90;    //m.s^-2
+#define G_TERRE 9.81        //m.s^-2
+#define G_LUNE 1.62         //m.s^-2
+#define G_JUPITER 24.90     //m.s^-2
+#define DISTANCE 300        //m
+
+#define GENERATION_NBR_MINIMUM 3
+#define ECART_VARIATION 0.05f
 
 #define GENERATION_NBR_MINIMUM 3
 #define ECART_VARIATION 0.05f
@@ -72,7 +76,7 @@ int main(int argc, char** argv) {
     int generationNbr = 0;
     
     float** ancienneGeneration;
-    float** generation = Catapult::genererGeneration(nbrGeneration);
+    float** generation = Catapult::genererGeneration(nbrGeneration, G_TERRE);
       
     do{
         Utils::sort(generation, nbrGeneration);

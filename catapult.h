@@ -20,24 +20,29 @@
 
 #define TNT_DENOMINATEUR 4184
 
+const float PONDERATION_VIABLE = 0.5;
+const float  PONDERATION_ENERGIE = 0.35;
+const float  PONDERATION_PORTEE = 0.65;
+
 class Catapult{
     
 public:
-    static void genererCatapulte(float*&);
+    static void genererCatapulte(float*&, float);
     static float randomBetween(int, int);
-    static float** genererGeneration(int);
-    float forceTraction(float*, float);
-    float momentBras(float*, float);
-    float momentInertieBras(float*);
-    float accelerationAngulaire(float*, float);
-    float velocite(float*, float);
-    float portee(float*, float);
-    float energieImpact(float*, float);
-    float isViable(float*, float);
-    float energieTNT(float);
+    static float** genererGeneration(int, float);
+    static float forceTraction(float*, float);
+    static float momentBras(float*, float);
+    static float momentInertieBras(float*);
+    static float accelerationAngulaire(float*, float);
+    static float velocite(float*, float);
+    static float portee(float*, float);
+    static float energieImpact(float*, float);
+    static bool isViable(float*, float);
+    static float energieTNT(float);
     static float* croiserCatapultes(float*, float*);
     static void mutation(float*);
     static int getPointCoupe();
+    static float calculScore(float*, float);
     
 private:
     static int pointCoupe;
