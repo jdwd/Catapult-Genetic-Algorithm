@@ -38,7 +38,7 @@ bool isEnEvolution(int generationNbr, float moyennesGeneration[GENERATION_NBR_MI
  
     if(generationNbr <= GENERATION_NBR_MINIMUM)
         return true;
-    
+        
     int meilleurScoreIndex = -1;
     
     for(int i = 0; i < GENERATION_NBR_MINIMUM; i++)
@@ -62,6 +62,7 @@ bool isEnEvolution(int generationNbr, float moyennesGeneration[GENERATION_NBR_MI
  */
 int main(int argc, char** argv) {
     
+    //Initialisation du random
     srand(time(NULL));
     
     //Récupération du nombre d'individus à mettre en génération
@@ -82,11 +83,17 @@ int main(int argc, char** argv) {
     float indicateursGeneration[3][GENERATION_NBR_MINIMUM];
     int generationNbr = 0;
     
+    //Contient l'ancienne génération
     float** ancienneGeneration;
+    //Contient la génération en cours, initialisation aléatoire de la 1ère population
     float** generation = Catapult::genererGeneration(nbrElementsPerPopulation, G_TERRE);
       
+    //Tant que nos éléments évoluent
     do{
+        //Tri de la génération du plus haut score au plus faible
         Utils::sort(generation, nbrElementsPerPopulation);
+
+        //Si la première génération a été traitée, purge des éléments
         if(generationNbr > 0){
             for(int i = 0; i < nbrElementsPerPopulation; i++){
                 delete ancienneGeneration[i];
@@ -94,17 +101,28 @@ int main(int argc, char** argv) {
             delete ancienneGeneration;
         }
         
-        ancienneGeneration = generation; 
+        //La génération a été calculée, on les passe donc en anciens (à reproduire)
+        ancienneGeneration = generation;
+        
+        //Initialisation de la nouvelle génération
         generation = new float *[nbrElementsPerPopulation];
+
+        //Score total de la génération
         double scoreTotal = 0;
 
+        //Pour tous les 2 éléments de la population
         for(int cpt = 0; cpt < nbrElementsPerPopulation; cpt+=2){
             
+            //On ajoute le score de l'élément A et B
             scoreTotal += ancienneGeneration[cpt][SCORE] + ancienneGeneration[cpt+1][SCORE];
             
-            generation[cpt] = Catapult::croiserCatapultes( ancienneGeneration[cpt], ancienneGeneration[cpt+1] );
+            //On croise les catapultes A et B pour en créer un enfant
+            generation[cpt] = Catapult::croiserCatapultes( ancienneGeneration[cpt], ancienneGeneration[cpt+1], G_TERRE );
+            //Mutation du nouveau né
             Catapult::mutation(generation[cpt]);
-            generation[cpt+1] = Catapult::croiserCatapultes( ancienneGeneration[cpt], ancienneGeneration[cpt+1] );
+            
+            //Idem pour le frère
+            generation[cpt+1] = Catapult::croiserCatapultes( ancienneGeneration[cpt], ancienneGeneration[cpt+1], G_TERRE );
             Catapult::mutation(generation[cpt+1]);
         }
         
@@ -146,11 +164,8 @@ int main(int argc, char** argv) {
         
         generationNbr++;
 
-        /*cout << "ENFANTS" << endl;
-        for(int i = 0; i < nbrGeneration; i++)
-                for(int j = 0; j < CATAPULT_ARRAY_SIZE; j++)
-                    std::cout << i << ":" << j << " > " << generation[i][j] << std::endl;
-        */
+        //Augmentation du nombre de générations ayant existé
+        generationNbr++;
         
     }while( isEnEvolution(generationNbr, indicateursGeneration) );
     return 0;
