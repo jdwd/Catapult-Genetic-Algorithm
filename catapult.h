@@ -21,8 +21,8 @@
 #define TNT_DENOMINATEUR 4184
 
 const float PONDERATION_VIABLE = 0.5;
-const float  PONDERATION_ENERGIE = 0.35;
-const float  PONDERATION_PORTEE = 0.65;
+const float PONDERATION_ENERGIE = 0.35;
+const float PONDERATION_PORTEE = 0.65;
 
 class Catapult{
     
@@ -39,7 +39,7 @@ public:
     static float energieImpact(float*, float);
     static bool isViable(float*, float);
     static float energieTNT(float);
-    static float* croiserCatapultes(float*, float*);
+    static float* croiserCatapultes(float*, float*, float);
     static void mutation(float*);
     static int getPointCoupe();
     static float calculScore(float*, float);

@@ -1,11 +1,15 @@
 #include "catapult.h"
 
+//Initialisation du point de coupe statique
 int Catapult::pointCoupe = 0;
+
+//Génère un nombre aléatoire entre min et max
 float Catapult::randomBetween(int min, int max){
     
     return rand() % max + min;
 }
 
+//Génère un gène en suivant son ordre de grandeur
 int genererGene(int gene){
     
     switch(gene){
@@ -28,6 +32,7 @@ int genererGene(int gene){
     }
 }
 
+//Génère une catapulte et calcule son score suivant la gravité
 void Catapult::genererCatapulte(float* &catapulte, float gravite){
     
     catapulte[LB] = genererGene(LB);
@@ -40,55 +45,69 @@ void Catapult::genererCatapulte(float* &catapulte, float gravite){
     catapulte[SCORE] = Catapult::calculScore(catapulte, gravite);
 }
 
+//Génère toute une génération aléatoirement
 float** Catapult::genererGeneration(int nbrGeneration, float gravite){
     
+    //Initialisation de la génération
     float** generation = new float *[nbrGeneration];
-    
     for(int i = 0; i < nbrGeneration; i++){
-                
-        float* catapulte = new float[CATAPULT_ARRAY_SIZE];
         
+        //Génération de la catapulte
+        float* catapulte = new float[CATAPULT_ARRAY_SIZE];
         Catapult::genererCatapulte(catapulte, gravite);
         
+        //Ajout de la génération
         generation[i] = catapulte;
     }
     
     return generation;
 }
 
+//Récupération du point de coupe
 int Catapult::getPointCoupe(){
     
+    //Une chance sur deux de changer de point de coupe
     int changement = randomBetween(0, 1);
 
+    //Si l'on cherche à changer, ou si le point de coupe n'a pas été initialisé
     if(changement == 1 || pointCoupe == 0){
         
+        //On génère un nouveau point de coupe
         pointCoupe = randomBetween(1, CATAPULT_ELEM_NBR -1);
     }
     
     return pointCoupe;
 }
 
-float* Catapult::croiserCatapultes(float* maman1, float* maman2){
+//Croisement des catapultes maman1 et maman2
+float* Catapult::croiserCatapultes(float* maman1, float* maman2, float gravite){
     
+    //Génération du fiston
     float* fiston = new float[CATAPULT_ARRAY_SIZE];
     
-    bool mutation = false;
+    //Récupération du point de coupe
     int pointCoupe = Catapult::getPointCoupe();
     
+    //Pour chaque chromosome de maman1 à gauche ou égal au point de coupe, on le donne au fiston
     for(int chromosome = 0; chromosome <= pointCoupe; chromosome++)
         fiston[chromosome] = maman1[chromosome];
     
+    //Pour chaque chromosome de maman2 à droite du point de coupe, on le donne au fiston
     for(int chromosome = pointCoupe+1; chromosome <= CATAPULT_ELEM_NBR; chromosome++)
         fiston[chromosome] = maman2[chromosome];
     
-    fiston[SCORE] = Catapult::randomBetween(0, 1000);
+    //Calcul du score
+    fiston[SCORE] = Catapult::calculScore(fiston, gravite);
     
     return fiston;
 }
 
+//Mutation des gènes du nouveau né
 void Catapult::mutation(float* catapulte){
     
+    //Pour chacun de ses chromosomes
     for(int i = 0; i < CATAPULT_ELEM_NBR; i++)
+        //Avec une chance de 5%, on lui donne un gène aléatoire 
         if(randomBetween(1, 100) <= 5)
             catapulte[i] = genererGene(i);
 }
