@@ -16,6 +16,10 @@
 #define GENERATION_NBR_MINIMUM 3
 #define ECART_VARIATION 0.05f
 
+#define MOYENNE 0
+#define VARIANCE 1
+#define MEDIANE 2
+
 /*
  * Génération d'une population de X individu
  * Test de chaque individus
@@ -61,47 +65,40 @@ int main(int argc, char** argv) {
     srand(time(NULL));
     
     //Récupération du nombre d'individus à mettre en génération
-    int nbrGeneration;
+    int nbrElementsPerPopulation;
     do {
         cout << "Enter a number (pair, n > 0) : ";
-        if (!(cin >> nbrGeneration)) {
+        if (!(cin >> nbrElementsPerPopulation)) {
             cout << "Please enter numbers only." << endl;
             cin.clear();
             cin.ignore(10000,'\n');
         }    
     }
-    while ((nbrGeneration == 0) || (!Utils::isPairNumber(nbrGeneration)));
+    while ((nbrElementsPerPopulation == 0) || (!Utils::isPairNumber(nbrElementsPerPopulation)));
       
-    float moyennesGeneration[GENERATION_NBR_MINIMUM];
+    //MOYENNE 0
+    //VARIANCE 1
+    //MEDIANE 2
+    float indicateursGeneration[3][GENERATION_NBR_MINIMUM];
     int generationNbr = 0;
     
     float** ancienneGeneration;
-    float** generation = Catapult::genererGeneration(nbrGeneration, G_TERRE);
+    float** generation = Catapult::genererGeneration(nbrElementsPerPopulation, G_TERRE);
       
     do{
-        Utils::sort(generation, nbrGeneration);
-        /*
-        for(int i = 0; i < nbrGeneration; i++)
-                for(int j = 0; j < CATAPULT_ARRAY_SIZE; j++)
-                    std::cout << i << ":" << j << " > " << generation[i][j] << std::endl;
-        */
-        //for(int j = 0; j < nbrGeneration; j++)
-        //    cout << generation[j][SCORE] << endl;
-
+        Utils::sort(generation, nbrElementsPerPopulation);
         if(generationNbr > 0){
-            for(int i = 0; i < nbrGeneration; i++){
+            for(int i = 0; i < nbrElementsPerPopulation; i++){
                 delete ancienneGeneration[i];
             }
             delete ancienneGeneration;
         }
         
-        ancienneGeneration = generation;
-        
-        generation = new float *[nbrGeneration];
-
+        ancienneGeneration = generation; 
+        generation = new float *[nbrElementsPerPopulation];
         double scoreTotal = 0;
 
-        for(int cpt = 0; cpt < nbrGeneration; cpt+=2){
+        for(int cpt = 0; cpt < nbrElementsPerPopulation; cpt+=2){
             
             scoreTotal += ancienneGeneration[cpt][SCORE] + ancienneGeneration[cpt+1][SCORE];
             
@@ -111,17 +108,41 @@ int main(int argc, char** argv) {
             Catapult::mutation(generation[cpt+1]);
         }
         
-        double scoreGeneration = scoreTotal / nbrGeneration;
+        double scoreMoyenGeneration = scoreTotal / nbrElementsPerPopulation;
+
+        //Mesure de la variance, necessite la moyenne des scores
+        // 1/EFFECTIF*Epsilon((xn-MOYENNE)²)
+        double varianceGeneration = 0;
+        for(int cpt = 0; cpt < nbrElementsPerPopulation; cpt++){
+            varianceGeneration += (pow(ancienneGeneration[cpt][SCORE]-scoreMoyenGeneration),2);
+        }
+        varianceGeneration = (varianceGeneration/nbrElementsPerPopulation);
         
-        
-        if(generationNbr <= 3)
-            moyennesGeneration[generationNbr] = scoreGeneration;
-        else moyennesGeneration[ (generationNbr-1) % GENERATION_NBR_MINIMUM ] = scoreGeneration;
-        
+        //Mesure de la médiane
+        //Effectif de population forcément paire
+        int premierTerme = ancienneGeneration[(nbrElementsPerPopulation/2)];
+        int secondTerme = ancienneGeneration[(nbrElementsPerPopulation/2)+1];
+        //centre de l'intervalle formé par les deux termes
+        double medianeGeneration = premierTerme + ((premierTerme - secondTerme)/2);
+                
+        if(generationNbr <= 3){
+            indicateursGeneration[MOYENNE][generationNbr]  = scoreMoyenGeneration;
+            indicateursGeneration[VARIANCE][generationNbr] = varianceGeneration;
+            indicateursGeneration[MEDIANE][generationNbr]  = medianeGeneration;
+        }else {
+            //Déplacement necessaire des résultats, car nous ne conservons que les 3 derniers
+            
+            indicateursGeneration[0] = indicateursGeneration[1];
+            indicateursGeneration[1] = indicateursGeneration[2];
+            indicateursGeneration[3] = scoreMoyenGeneration;
+
+        }
+
+
         //if(generationNbr > 3)
         //    cout << moyennesGeneration[0] << ":" << moyennesGeneration[1] << ":" << moyennesGeneration[3] << endl;
         
-        cout << "Génération n°" << generationNbr << ":" << scoreGeneration << endl;
+        cout << "Génération n°" << generationNbr << ", score moyen:" << scoreMoyenGeneration << endl;
         
         generationNbr++;
 
@@ -131,7 +152,7 @@ int main(int argc, char** argv) {
                     std::cout << i << ":" << j << " > " << generation[i][j] << std::endl;
         */
         
-    }while( isEnEvolution(generationNbr, moyennesGeneration) );
+    }while( isEnEvolution(generationNbr, indicateursGeneration) );
     return 0;
 }
 
