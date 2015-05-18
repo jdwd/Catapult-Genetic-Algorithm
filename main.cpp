@@ -116,7 +116,12 @@ int main(int argc, char** argv) {
         
         if(generationNbr <= 3)
             moyennesGeneration[generationNbr] = scoreGeneration;
-        else moyennesGeneration[ (generationNbr-1) % GENERATION_NBR_MINIMUM ] = scoreGeneration;
+        else {
+                       
+            moyennesGeneration[0] = moyennesGeneration[1];
+            moyennesGeneration[1] = moyennesGeneration[2];
+            moyennesGeneration[3] = scoreGeneration;
+        }
         
         //if(generationNbr > 3)
         //    cout << moyennesGeneration[0] << ":" << moyennesGeneration[1] << ":" << moyennesGeneration[3] << endl;
