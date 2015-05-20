@@ -10,10 +10,7 @@
 #define G_JUPITER 24.90     //m.s^-2
 #define DISTANCE 300        //m
 
-#define GENERATION_NBR_MINIMUM 3
-#define ECART_VARIATION 0.05f
-
-#define GENERATION_NBR_MINIMUM 3
+#define GENERATION_NBR_MINIMUM 5
 #define ECART_VARIATION 0.05f
 
 #define MOYENNE 0
@@ -36,18 +33,43 @@ using namespace std;
 
 // Méthode permettant de déterminer si les générations évoluent dans le bon sens 
 //et sont capable de produire une nouvelle génération plus évoluée
-bool isEvoluting(int generationNbr, float moyennesGeneration[3][GENERATION_NBR_MINIMUM]) {
+bool isEvoluting(int generationNbr, float indicesGeneration[3][GENERATION_NBR_MINIMUM]) {
 
+    
+    if(generationNbr < GENERATION_NBR_MINIMUM)
+        return true;
+    
     // Determiner si la génération est à même de produire une génération plus performante
     // revient à définir si :
     // - La moyenne augmente : cela signifie que la génération entière évolue, mais pas forcément que la meilleure caatapute de chaque génération évolue donc l'indice n'est pas suffisant : NOTION d'ECART
     // - La médiane augmente : autre indicateur de l'évolution d'une population, n'est pas affectée par les valeurs extremes, nous lui donnons donc tout autant de crédit : NOTION DE DISPERSION
     // - La variance diminue : cet indicateur permet de vérifier si l'évolution des individus convergent vers un seul et même individut, les évolutions vont donc dans le même sens, à l'inverse l'évolution se disperse et n'arrvie pas à s'orienter
      
-    //1ere étape : calcul du coefficient directeur
-    //2eme étape : calcul du pourcentage d'évolution
-    //3eme étape : calcul du coefficient d'évolution positif
-
+    //MOYENNE
+    float generationPrecMoyenne = Utils::coefDirecteur(indicesGeneration[MOYENNE][0], indicesGeneration[MOYENNE][1]);
+    float generationCurrMoyenne = Utils::coefDirecteur(indicesGeneration[MOYENNE][1], indicesGeneration[MOYENNE][2]);
+    float evolutionMoyenne = generationCurrMoyenne - generationPrecMoyenne;
+    
+    //MEDIANE
+    float generationPrecMediane = Utils::coefDirecteur(indicesGeneration[MEDIANE][0], indicesGeneration[MEDIANE][1]);
+    float generationCurrMediane = Utils::coefDirecteur(indicesGeneration[MEDIANE][1], indicesGeneration[MEDIANE][2]);
+    float evolutionMediane = generationCurrMediane - generationPrecMediane;
+    
+    //VARIANCE
+    float generationPrecVariance = Utils::coefDirecteur(indicesGeneration[VARIANCE][0], indicesGeneration[VARIANCE][1]);
+    float generationCurrVariance = Utils::coefDirecteur(indicesGeneration[VARIANCE][1], indicesGeneration[VARIANCE][2]);
+    float evolutionVariance = generationCurrVariance - generationPrecVariance;
+    
+    
+    cout << "evolutionMoyenne: "<<evolutionMoyenne<<endl;
+    cout << "evolutionMediane: "<<evolutionMediane<<endl;
+    cout << "evolutionVariance: "<<evolutionVariance<<endl;
+    //Si le variance diminue, et ce de plus de 2% alors la génération évolue toujours
+    bool variance = (evolutionVariance < -0.02);
+    //Si la médiane ou la moyenne est toujours en augmentation alors la génération évolue
+    bool med = (evolutionMediane > 0.06 && evolutionMoyenne > 0.08);
+    
+    return variance && med;
 }
 
 /*
