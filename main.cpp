@@ -63,19 +63,20 @@ bool isEvoluting(int generationNbr, long double indicesGeneration[3][3]) {
     cout << "evolutionMoyenne: "<<evolutionMoyenne<<endl;
     cout << "evolutionMediane: "<<evolutionMediane<<endl;
     cout << "evolutionVariance: "<<evolutionVariance<<endl;
+    
     //Si le variance diminue, et ce de plus de 2% alors la génération évolue toujours
     bool variance = (evolutionVariance < -0.02);
     //Si la médiane ou la moyenne est toujours en augmentation alors la génération évolue
-    bool med = (evolutionMediane > 0.06 && evolutionMoyenne > 0.08);
+    bool med = (evolutionMediane > 0.06 || evolutionMoyenne > 0.08);
     
-    return variance && med;
+    return (variance || med);
 }
 
 /*
  * 
  */
 int main(int argc, char** argv) {
-
+    //cout.precision(60);
     //Initialisation du random
     srand(time(NULL));
 
@@ -140,8 +141,6 @@ int main(int argc, char** argv) {
         }
 
         long double scoreMoyenGeneration = scoreTotal / nbrElementsPerPopulation;
-
-        cout << "Score moyen: " << scoreMoyenGeneration << endl;
         
         //Mesure de la variance, necessite la moyenne des scores
         // 1/EFFECTIF*Epsilon((xn-MOYENNE)²)
