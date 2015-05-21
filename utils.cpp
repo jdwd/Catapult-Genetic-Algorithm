@@ -5,8 +5,6 @@
  */
 
 #include "utils.h"
-
-
     //Fonction permettant de vérifier si un nombre est pair
     bool Utils::isPairNumber(int number){
         return ((number%2)==0);
@@ -34,7 +32,12 @@
                     tab[i] = temp;
                 }
             }
-
-
         }
     }
+    
+    //Fonction permettant de calculer le coefficient directeur, en pourcentage d'évolution
+    float Utils::coefDirecteur(float first, float second){
+        return (second-first)/first;   
+    }
+    
+    
