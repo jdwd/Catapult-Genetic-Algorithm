@@ -9,9 +9,9 @@
 
 
 #### Compiler and tool definitions shared by all build targets #####
-CCC = g++
-CXX = g++
-BASICOPTS = -g -m64
+CCC = /usr/local/bin/g++-4.9
+CXX = /usr/local/bin/g++-4.9
+BASICOPTS = -g -m64 -std=c++11
 CCFLAGS = $(BASICOPTS)
 CXXFLAGS = $(BASICOPTS)
 CCADMIN = 

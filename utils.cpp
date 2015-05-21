@@ -36,7 +36,7 @@
     }
     
     //Fonction permettant de calculer le coefficient directeur, en pourcentage d'évolution
-    float Utils::coefDirecteur(float first, float second){
+    long double Utils::coefDirecteur(long double first, long double second){
         return (second-first)/first;   
     }
     

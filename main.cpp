@@ -10,7 +10,7 @@
 #define G_JUPITER 24.90     //m.s^-2
 #define DISTANCE 300        //m
 
-#define GENERATION_NBR_MINIMUM 5
+#define GENERATION_NBR_MINIMUM 10
 #define ECART_VARIATION 0.05f
 
 #define MOYENNE 0
@@ -33,8 +33,7 @@ using namespace std;
 
 // Méthode permettant de déterminer si les générations évoluent dans le bon sens 
 //et sont capable de produire une nouvelle génération plus évoluée
-bool isEvoluting(int generationNbr, float indicesGeneration[3][GENERATION_NBR_MINIMUM]) {
-
+bool isEvoluting(int generationNbr, long double indicesGeneration[3][3]) {
     
     if(generationNbr < GENERATION_NBR_MINIMUM)
         return true;
@@ -46,19 +45,19 @@ bool isEvoluting(int generationNbr, float indicesGeneration[3][GENERATION_NBR_MI
     // - La variance diminue : cet indicateur permet de vérifier si l'évolution des individus convergent vers un seul et même individut, les évolutions vont donc dans le même sens, à l'inverse l'évolution se disperse et n'arrvie pas à s'orienter
      
     //MOYENNE
-    float generationPrecMoyenne = Utils::coefDirecteur(indicesGeneration[MOYENNE][0], indicesGeneration[MOYENNE][1]);
-    float generationCurrMoyenne = Utils::coefDirecteur(indicesGeneration[MOYENNE][1], indicesGeneration[MOYENNE][2]);
-    float evolutionMoyenne = generationCurrMoyenne - generationPrecMoyenne;
+    long double generationPrecMoyenne = Utils::coefDirecteur(indicesGeneration[MOYENNE][0], indicesGeneration[MOYENNE][1]);
+    long double generationCurrMoyenne = Utils::coefDirecteur(indicesGeneration[MOYENNE][1], indicesGeneration[MOYENNE][2]);
+    long double evolutionMoyenne = generationCurrMoyenne - generationPrecMoyenne;
     
     //MEDIANE
-    float generationPrecMediane = Utils::coefDirecteur(indicesGeneration[MEDIANE][0], indicesGeneration[MEDIANE][1]);
-    float generationCurrMediane = Utils::coefDirecteur(indicesGeneration[MEDIANE][1], indicesGeneration[MEDIANE][2]);
-    float evolutionMediane = generationCurrMediane - generationPrecMediane;
+    long double generationPrecMediane = Utils::coefDirecteur(indicesGeneration[MEDIANE][0], indicesGeneration[MEDIANE][1]);
+    long double generationCurrMediane = Utils::coefDirecteur(indicesGeneration[MEDIANE][1], indicesGeneration[MEDIANE][2]);    
+    long double evolutionMediane = generationCurrMediane - generationPrecMediane;
     
     //VARIANCE
-    float generationPrecVariance = Utils::coefDirecteur(indicesGeneration[VARIANCE][0], indicesGeneration[VARIANCE][1]);
-    float generationCurrVariance = Utils::coefDirecteur(indicesGeneration[VARIANCE][1], indicesGeneration[VARIANCE][2]);
-    float evolutionVariance = generationCurrVariance - generationPrecVariance;
+    long double generationPrecVariance = Utils::coefDirecteur(indicesGeneration[VARIANCE][0], indicesGeneration[VARIANCE][1]);
+    long double generationCurrVariance = Utils::coefDirecteur(indicesGeneration[VARIANCE][1], indicesGeneration[VARIANCE][2]);    
+    long double evolutionVariance = generationCurrVariance - generationPrecVariance;
     
     
     cout << "evolutionMoyenne: "<<evolutionMoyenne<<endl;
@@ -94,7 +93,7 @@ int main(int argc, char** argv) {
     //MOYENNE 0
     //VARIANCE 1
     //MEDIANE 2
-    float indicateursGeneration[3][GENERATION_NBR_MINIMUM];
+    long double indicateursGeneration[3][3];
     int generationNbr = 0;
 
     //Contient l'ancienne génération
@@ -140,11 +139,13 @@ int main(int argc, char** argv) {
             Catapult::mutation(generation[cpt + 1]);
         }
 
-        double scoreMoyenGeneration = scoreTotal / nbrElementsPerPopulation;
+        long double scoreMoyenGeneration = scoreTotal / nbrElementsPerPopulation;
 
+        cout << "Score moyen: " << scoreMoyenGeneration << endl;
+        
         //Mesure de la variance, necessite la moyenne des scores
         // 1/EFFECTIF*Epsilon((xn-MOYENNE)²)
-        double varianceGeneration = 0;
+        long double varianceGeneration = 0;
         for (int cpt = 0; cpt < nbrElementsPerPopulation; cpt++) {
             varianceGeneration += (pow((ancienneGeneration[cpt][SCORE] - scoreMoyenGeneration), 2));
         }
@@ -152,10 +153,10 @@ int main(int argc, char** argv) {
 
         //Mesure de la médiane
         //Effectif de population forcément paire
-        float premierTerme = ancienneGeneration[(nbrElementsPerPopulation / 2)][SCORE];
-        float secondTerme = ancienneGeneration[(nbrElementsPerPopulation / 2) + 1][SCORE];
+        long double premierTerme = ancienneGeneration[(nbrElementsPerPopulation / 2)][SCORE];
+        long double secondTerme = ancienneGeneration[(nbrElementsPerPopulation / 2) + 1][SCORE];
         //centre de l'intervalle formé par les deux termes
-        double medianeGeneration = premierTerme + ((premierTerme - secondTerme) / 2);
+        long double medianeGeneration = premierTerme + ((premierTerme - secondTerme) / 2);
 
         //Si les 3 premières générations n'ont pas encore été générées, on les ajoute "naturellement" au tableau        
         if (generationNbr <= 3) {
@@ -169,17 +170,17 @@ int main(int argc, char** argv) {
             //MOYENNE
             indicateursGeneration[MOYENNE][0] = indicateursGeneration[MOYENNE][1];
             indicateursGeneration[MOYENNE][1] = indicateursGeneration[MOYENNE][2];
-            indicateursGeneration[MOYENNE][3] = scoreMoyenGeneration;
+            indicateursGeneration[MOYENNE][2] = scoreMoyenGeneration;
 
             //VARIANCE
             indicateursGeneration[VARIANCE][0] = indicateursGeneration[VARIANCE][1];
             indicateursGeneration[VARIANCE][1] = indicateursGeneration[VARIANCE][2];
-            indicateursGeneration[VARIANCE][3] = varianceGeneration;
+            indicateursGeneration[VARIANCE][2] = varianceGeneration;
 
             //MEDIANE
             indicateursGeneration[MEDIANE][0] = indicateursGeneration[MEDIANE][1];
             indicateursGeneration[MEDIANE][1] = indicateursGeneration[MEDIANE][2];
-            indicateursGeneration[MEDIANE][3] = medianeGeneration;
+            indicateursGeneration[MEDIANE][2] = medianeGeneration;
         }
 
         //if(generationNbr > 3)
@@ -192,8 +193,11 @@ int main(int argc, char** argv) {
 
         //Augmentation du nombre de générations ayant existé
         generationNbr++;
-
+        
     } while (isEvoluting(generationNbr, indicateursGeneration));
+    
+    cout << "Nombre de générations: " << generationNbr << endl;
+    
     return 0;
 }
 

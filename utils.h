@@ -14,7 +14,7 @@ class Utils{
 public: 
     static bool isPairNumber(int );
     static void sort(float**, int);
-    static float coefDirecteur(float, float);
+    static long double coefDirecteur(long double, long double);
 };
 
 
