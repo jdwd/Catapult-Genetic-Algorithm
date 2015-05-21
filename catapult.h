@@ -6,7 +6,7 @@
 #include <iostream>
 
 #define CATAPULT_ELEM_NBR 7
-#define CATAPULT_ARRAY_SIZE 8
+#define CATAPULT_ARRAY_SIZE 10
 
 #define LB 0           //la longueur du bras Lb (en mètres)
 #define MB 1           //la masse du bras mb (en kilos)
@@ -17,6 +17,8 @@
 #define ALPHA 6        //l'angle α (en degrés)
 
 #define SCORE 7
+#define PORTEE 8
+#define ENERGIE 9
 
 #define TNT_DENOMINATEUR 4184
 
@@ -42,7 +44,7 @@ public:
     static float* croiserCatapultes(float*, float*, float);
     static void mutation(float*);
     static int getPointCoupe();
-    static float calculScore(float*, float);
+    static float calculScore(float*&, float);
     
 private:
     static int pointCoupe;

@@ -14,7 +14,7 @@ int genererGene(int gene){
     
     switch(gene){
         case LB:
-            return Catapult::randomBetween(1, 1000);
+            return Catapult::randomBetween(1, 50);
         case MB:
             return Catapult::randomBetween(1, 2000);
         case BETA:
@@ -24,7 +24,7 @@ int genererGene(int gene){
         case MP:
             return Catapult::randomBetween(0, 10000);
         case LR:
-            return Catapult::randomBetween(1, 1000);
+            return Catapult::randomBetween(1, 501);
         case ALPHA:
             return Catapult::randomBetween(0, 180);
         default:
@@ -95,9 +95,6 @@ float* Catapult::croiserCatapultes(float* maman1, float* maman2, float gravite){
     //Pour chaque chromosome de maman2 à droite du point de coupe, on le donne au fiston
     for(int chromosome = pointCoupe+1; chromosome <= CATAPULT_ELEM_NBR; chromosome++)
         fiston[chromosome] = maman2[chromosome];
-    
-    //Calcul du score
-    fiston[SCORE] = Catapult::calculScore(fiston, gravite);
     
     return fiston;
 }
@@ -173,7 +170,7 @@ float Catapult::energieTNT(float energieJoule){
 }
 
 //Définit le score d'une catapulte
-float Catapult::calculScore(float* catapult, float gravite){
+float Catapult::calculScore(float* &catapult, float gravite){
     //Une catapulte se doit d'envoyer un boulet à une cible à une distance D avec l'énergie cinétique C la plus élevée
     float score=0;
     float v=1;
@@ -187,6 +184,9 @@ float Catapult::calculScore(float* catapult, float gravite){
     
     e = (e*PONDERATION_ENERGIE);
     p = (p*PONDERATION_PORTEE);
+    
+    catapult[ENERGIE] = e;
+    catapult[PORTEE] = p;
     
     return (e+p)/v;
      

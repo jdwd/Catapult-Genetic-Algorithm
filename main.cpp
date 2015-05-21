@@ -63,12 +63,13 @@ bool isEvoluting(int generationNbr, long double indicesGeneration[3][3]) {
     cout << "evolutionMoyenne: "<<evolutionMoyenne<<endl;
     cout << "evolutionMediane: "<<evolutionMediane<<endl;
     cout << "evolutionVariance: "<<evolutionVariance<<endl;
+    
     //Si le variance diminue, et ce de plus de 2% alors la génération évolue toujours
     bool variance = (evolutionVariance < -0.02);
     //Si la médiane ou la moyenne est toujours en augmentation alors la génération évolue
-    bool med = (evolutionMediane > 0.06 && evolutionMoyenne > 0.08);
+    bool med = (evolutionMediane > 0.06 || evolutionMoyenne > 0.08);
     
-    return variance && med;
+    return (variance || med);
 }
 
 /*
@@ -76,9 +77,14 @@ bool isEvoluting(int generationNbr, long double indicesGeneration[3][3]) {
  */
 int main(int argc, char** argv) {
 
+    cout.precision(60);
+    
     //Initialisation du random
-    srand(time(NULL));
-
+//    if(argc > 1)
+//        srand(time(argv[0]));
+//    else 
+        srand(time(NULL));
+    
     //Récupération du nombre d'individus à mettre en génération
     int nbrElementsPerPopulation;
     do {
@@ -90,6 +96,30 @@ int main(int argc, char** argv) {
         }
     } while ((nbrElementsPerPopulation == 0) || (!Utils::isPairNumber(nbrElementsPerPopulation)));
 
+    int astreChoix;
+    do{
+        cout << "Sur quel astre voulez-vous effectuer ce test ?" << endl;
+        cout << "(1) Terre" << endl << "(2) Lune" << endl << "(3) Jupiter" << endl;
+        if (!(cin >> astreChoix)) {
+            cout << "Please enter numbers only." << endl;
+            cin.clear();
+            cin.ignore(10000, '\n');
+        }
+    }while( astreChoix < 1 || astreChoix > 3 );
+    
+    float astre;
+    switch(astreChoix){
+        case 1:
+            astre = G_TERRE;
+            break;
+        case 2:
+            astre = G_LUNE;
+            break;
+        case 3:
+            astre = G_JUPITER;
+            break;
+    }
+    
     //MOYENNE 0
     //VARIANCE 1
     //MEDIANE 2
@@ -99,7 +129,7 @@ int main(int argc, char** argv) {
     //Contient l'ancienne génération
     float** ancienneGeneration;
     //Contient la génération en cours, initialisation aléatoire de la 1ère population
-    float** generation = Catapult::genererGeneration(nbrElementsPerPopulation, G_TERRE);
+    float** generation = Catapult::genererGeneration(nbrElementsPerPopulation, astre);
 
     //Tant que nos éléments évoluent
     do {
@@ -114,6 +144,18 @@ int main(int argc, char** argv) {
             delete ancienneGeneration;
         }
 
+        cout << "Meilleure catapulte de la génération " << generationNbr << endl;
+        cout << "\t Score: \t\t" << generation[0][SCORE] << " points" << endl;
+        cout << "\t Longueur bras: \t" << generation[0][LB] << " mètres" << endl;
+        cout << "\t Masse bras: \t\t" << generation[0][MB] << " kilogrammes" << endl;
+        cout << "\t Angle force traction: \t" << generation[0][BETA] << " degrés" << endl;
+        cout << "\t Masse contrepoids: \t" << generation[0][MC] << " kilogrammes" << endl;
+        cout << "\t Masse projectile: \t" << generation[0][MP] << " kilogrammes" << endl;
+        cout << "\t Longueur base: \t" << generation[0][LR] << " mètres" << endl;
+        cout << "\t Angle alpha: \t\t" << generation[0][ALPHA] << " degrés" << endl;
+        cout << "\t Energie: \t\t" << generation[0][ENERGIE] << " joules" << endl;
+        cout << "\t Portée: \t\t" << generation[0][PORTEE] << " mètres" << endl;
+        
         //La génération a été calculée, on les passe donc en anciens (à reproduire)
         ancienneGeneration = generation;
 
@@ -130,18 +172,22 @@ int main(int argc, char** argv) {
             scoreTotal += ancienneGeneration[cpt][SCORE] + ancienneGeneration[cpt + 1][SCORE];
 
             //On croise les catapultes A et B pour en créer un enfant
-            generation[cpt] = Catapult::croiserCatapultes(ancienneGeneration[cpt], ancienneGeneration[cpt + 1], G_TERRE);
+            generation[cpt] = Catapult::croiserCatapultes(ancienneGeneration[cpt], ancienneGeneration[cpt + 1], astre);
             //Mutation du nouveau né
             Catapult::mutation(generation[cpt]);
+            
+            //Calcul du score
+            generation[cpt][SCORE] = Catapult::calculScore(generation[cpt], astre);
 
             //Idem pour le frère
-            generation[cpt + 1] = Catapult::croiserCatapultes(ancienneGeneration[cpt], ancienneGeneration[cpt + 1], G_TERRE);
+            generation[cpt + 1] = Catapult::croiserCatapultes(ancienneGeneration[cpt], ancienneGeneration[cpt + 1], astre);
             Catapult::mutation(generation[cpt + 1]);
+            
+            //Calcul du score
+            generation[cpt + 1][SCORE] = Catapult::calculScore(generation[cpt + 1], astre);
         }
 
         long double scoreMoyenGeneration = scoreTotal / nbrElementsPerPopulation;
-
-        cout << "Score moyen: " << scoreMoyenGeneration << endl;
         
         //Mesure de la variance, necessite la moyenne des scores
         // 1/EFFECTIF*Epsilon((xn-MOYENNE)²)
