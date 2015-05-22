@@ -179,7 +179,7 @@ int main(int argc, char** argv) {
             generation[cpt][SCORE] = Catapult::calculScore(generation[cpt], astre);
             
             //Idem pour le frère
-            generation[cpt + 1] = Catapult::croiserCatapultes(ancienneGeneration[cpt + 1], ancienneGeneration[cpt], astre);
+            generation[cpt + 1] = Catapult::croiserCatapultes(ancienneGeneration[cpt + 1], ancienneGeneration[cpt]);
             Catapult::mutation(generation[cpt + 1]);
             
             //Calcul du score
