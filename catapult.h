@@ -5,7 +5,9 @@
 #include <stdlib.h> 
 #include <iostream>
 
-# define M_PI 3.14159265358979323846
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 #define CATAPULT_ELEM_NBR 7
 #define CATAPULT_ARRAY_SIZE 10
@@ -45,7 +47,7 @@ public:
     static float energieImpact(float*, float);
     static bool isViable(float*, float);
     static float energieTNT(float);
-    static float* croiserCatapultes(float*, float*, float);
+    static float* croiserCatapultes(float*, float*);
     static void mutation(float*);
     static int getPointCoupe();
     static float calculScore(float*&, float);

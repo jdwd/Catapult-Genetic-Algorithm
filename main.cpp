@@ -79,9 +79,9 @@ int main(int argc, char** argv) {
     cout.precision(60);
     
     //Initialisation du random
-//    if(argc > 1)
-//        srand(time(argv[0]));
-//    else 
+    if(argc > 1)
+        srand(atoi(argv[0]));
+    else 
         srand(time(NULL));
     
     //Récupération du nombre d'individus à mettre en génération
@@ -171,19 +171,20 @@ int main(int argc, char** argv) {
             scoreTotal += ancienneGeneration[cpt][SCORE] + ancienneGeneration[cpt + 1][SCORE];
 
             //On croise les catapultes A et B pour en créer un enfant
-            generation[cpt] = Catapult::croiserCatapultes(ancienneGeneration[cpt], ancienneGeneration[cpt + 1], astre);
+            generation[cpt] = Catapult::croiserCatapultes(ancienneGeneration[cpt], ancienneGeneration[cpt + 1]);
             //Mutation du nouveau né
             Catapult::mutation(generation[cpt]);
             
             //Calcul du score
             generation[cpt][SCORE] = Catapult::calculScore(generation[cpt], astre);
-
+            
             //Idem pour le frère
-            generation[cpt + 1] = Catapult::croiserCatapultes(ancienneGeneration[cpt], ancienneGeneration[cpt + 1], astre);
+            generation[cpt + 1] = Catapult::croiserCatapultes(ancienneGeneration[cpt], ancienneGeneration[cpt + 1]);
             Catapult::mutation(generation[cpt + 1]);
             
             //Calcul du score
             generation[cpt + 1][SCORE] = Catapult::calculScore(generation[cpt + 1], astre);
+            
         }
 
         long double scoreMoyenGeneration = scoreTotal / nbrElementsPerPopulation;
