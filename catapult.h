@@ -5,6 +5,8 @@
 #include <stdlib.h> 
 #include <iostream>
 
+# define M_PI 3.14159265358979323846
+
 #define CATAPULT_ELEM_NBR 7
 #define CATAPULT_ARRAY_SIZE 10
 
@@ -20,11 +22,13 @@
 #define PORTEE 8
 #define ENERGIE 9
 
+#define DISTANCE 300        //m
+
 #define TNT_DENOMINATEUR 4184
 
-const float PONDERATION_VIABLE = 0.5;
-const float PONDERATION_ENERGIE = 0.35;
-const float PONDERATION_PORTEE = 0.65;
+const float PONDERATION_VIABLE = 0.4;
+const float PONDERATION_ENERGIE = 0.3;
+const float PONDERATION_PORTEE = 0.1;
 
 class Catapult{
     

@@ -8,7 +8,6 @@
 #define G_TERRE 9.81        //m.s^-2
 #define G_LUNE 1.62         //m.s^-2
 #define G_JUPITER 24.90     //m.s^-2
-#define DISTANCE 300        //m
 
 #define GENERATION_NBR_MINIMUM 10
 #define ECART_VARIATION 0.05f
