@@ -26,7 +26,7 @@ int genererGene(int gene){
         case LR:
             return Catapult::randomBetween(1, 50);
         case ALPHA:
-            return Catapult::randomBetween(0, 90);
+            return Catapult::randomBetween(0, 180);
         default:
             return 0;
     }
@@ -80,7 +80,7 @@ int Catapult::getPointCoupe(){
 }
 
 //Croisement des catapultes maman1 et maman2
-float* Catapult::croiserCatapultes(float* maman1, float* maman2, float gravite){
+float* Catapult::croiserCatapultes(float* maman1, float* maman2){
     
     //Génération du fiston
     float* fiston = new float[CATAPULT_ARRAY_SIZE];
@@ -93,9 +93,9 @@ float* Catapult::croiserCatapultes(float* maman1, float* maman2, float gravite){
         fiston[chromosome] = maman1[chromosome];
     
     //Pour chaque chromosome de maman2 à droite du point de coupe, on le donne au fiston
-    for(int chromosome = pointCoupe+1; chromosome <= CATAPULT_ELEM_NBR; chromosome++)
+    for(int chromosome = pointCoupe+1; chromosome < CATAPULT_ELEM_NBR; chromosome++)
         fiston[chromosome] = maman2[chromosome];
-    
+        
     return fiston;
 }
 
