@@ -178,12 +178,9 @@ float Catapult::energieTNT(float energieJoule){
 //Définit le score d'une catapulte
 float Catapult::calculScore(float* &catapult, float gravite){
     //Une catapulte se doit d'envoyer un boulet à une cible à une distance D avec l'énergie cinétique C la plus élevée
-    float score=0;
     float viableInd=1;
     float e = energieImpact(catapult, gravite);
     float p = portee(catapult, gravite);
-    float ponderationPortee;
-    float ponderationEnergie;
 
     //Dans un premier temps il nous faut déterminer si la construction est viable
     if(!isViable(catapult, gravite)){
@@ -193,8 +190,6 @@ float Catapult::calculScore(float* &catapult, float gravite){
    //Indicateur de portée
     float porteeInd = exp(-(pow((p-DISTANCE), 2))/10000000);
     float energieInd = (atan(e/1000000))/(M_PI/2);
-    
-    ponderationEnergie = (e*PONDERATION_ENERGIE);
     
     catapult[ENERGIE] = e;
     catapult[PORTEE] = p;
