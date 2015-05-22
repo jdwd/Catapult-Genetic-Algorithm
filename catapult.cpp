@@ -24,7 +24,7 @@ int genererGene(int gene){
         case MP:
             return Catapult::randomBetween(0, 10000);
         case LR:
-            return Catapult::randomBetween(1, 501);
+            return Catapult::randomBetween(1, 50);
         case ALPHA:
             return Catapult::randomBetween(0, 180);
         default:
@@ -111,7 +111,7 @@ void Catapult::mutation(float* catapulte){
 
 //Force de traction F (en N))
 float Catapult::forceTraction(float* catapult, float gravite){
-    return((catapult[MC]*gravite)*sin(catapult[BETA])-(catapult[MP]*gravite)*cos(catapult[ALPHA]));
+    return ((catapult[MC]*gravite)*sin(catapult[BETA]*(M_PI/180))-(catapult[MP]*gravite)*cos(catapult[ALPHA]*(M_PI/180)));
 }
 
 //Moment du bras M en (en N.m)
@@ -121,7 +121,7 @@ float Catapult::momentBras(float* catapult, float gravite){
 
 //Moment d'inertie du bras I (en kg/m²)
 float Catapult::momentInertieBras(float* catapult){
-    return ((catapult[MB]*sqrt(catapult[LB]))/3);
+    return ((catapult[MB]*pow(catapult[LB], 2))/3);
 }
 
 //Accélération angulaire uniforme a (en rad/s²)
@@ -136,7 +136,7 @@ float Catapult::velocite(float* catapult, float gravite){
 
 //Portée P (en M)
 float Catapult::portee(float* catapult, float gravite){
-    return ((pow(velocite(catapult, gravite), 2)/gravite)*sin(2*(90-catapult[ALPHA])));
+    return ((pow(velocite(catapult, gravite), 2)/gravite)*sin((2*(90-catapult[ALPHA]))*(M_PI/180)));
 }
 
 //Energie d'impact (en joules) assimilée à la force cinétique transformée à l'impact
@@ -148,17 +148,17 @@ float Catapult::energieImpact(float* catapult, float gravite){
 //Indique si la construction est viable
 bool Catapult::isViable(float* catapult, float gravite){
     float lessPart = (pow(
-                            (sin(catapult[ALPHA])
+                            (sin(catapult[ALPHA]*(M_PI/180))
                             *catapult[LB])
                             , 2)
                     +pow(
                             (
-                                (cos(catapult[ALPHA])
+                                (cos(catapult[ALPHA]*(M_PI/180))
                                 *catapult[LB])
                                 -catapult[LR]
                             )
                             , 2)
-                        *sin(catapult[ALPHA])
+                        *sin(catapult[ALPHA]*(M_PI/180))
                         *(catapult[MP]*gravite));
     float morePart  = catapult[LR]*(catapult[MC]*gravite);
     return (lessPart <= morePart);

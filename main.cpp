@@ -76,7 +76,6 @@ bool isEvoluting(int generationNbr, long double indicesGeneration[3][3]) {
  * 
  */
 int main(int argc, char** argv) {
-    //cout.precision(60);
 
     cout.precision(60);
     
