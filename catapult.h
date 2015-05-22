@@ -26,9 +26,7 @@
 
 #define TNT_DENOMINATEUR 4184
 
-const float PONDERATION_VIABLE = 0.4;
-const float PONDERATION_ENERGIE = 0.3;
-const float PONDERATION_PORTEE = 0.1;
+const float PONDERATION_VIABLE = 0.5;
 
 class Catapult{
     
